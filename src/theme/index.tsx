@@ -226,7 +226,7 @@ export const Divide = styled.div<{ lang?: string | undefined }>`
 export const ThemedGlobalStyle = createGlobalStyle`
   html,
   body {
-    color: #ffffff;
+    color: #000;
     line-height: 1;
 
     box-sizing: border-box;
@@ -264,15 +264,15 @@ export const ThemedGlobalStyle = createGlobalStyle`
   }
 
   /* 让placehoder默认文字颜色为白色 */
-  input::-webkit-input-placeholder {
+  /* input::-webkit-input-placeholder {
     color:rgba(255,255,255,0.7);
   }
   
-  input::-moz-placeholder {  /* Firefox 19+ */
+  input::-moz-placeholder {
     color:rgba(255,255,255,0.7);
   }
   
   input:-ms-input-placeholder {  
     color:rgba(255,255,255,0.7);
-  }
+  } */
 `

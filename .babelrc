@@ -1,8 +1,0 @@
-{
-  "plugins": [
-    "babel-react-rif",
-    "babel-react-rfor",
-    "babel-react-rmodel",
-    "babel-react-rshow"
-  ]
-}

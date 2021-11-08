@@ -10,21 +10,24 @@ import store from '@/state'
 import ThemeProvider, { ThemedGlobalStyle } from '@/theme'
 
 // polyfill
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
+// import 'core-js/stable'
+// import 'regenerator-runtime/runtime'
 
 import AppLayout from './pages/AppLayout'
 import { HashRouter } from 'react-router-dom'
+import { LanguageProvider } from './i18n'
 
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
-      <ThemeProvider>
-        <ThemedGlobalStyle />
-        <AppLayout>
-          <App />
-        </AppLayout>
-      </ThemeProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <ThemedGlobalStyle />
+          <AppLayout>
+            <App />
+          </AppLayout>
+        </ThemeProvider>
+      </LanguageProvider>
     </HashRouter>
   </Provider>,
   document.getElementById('root')

@@ -1,4 +1,4 @@
-const { override, fixBabelImports, addWebpackExternals, addWebpackAlias, addLessLoader } = require('customize-cra')
+const { override, fixBabelImports, addWebpackExternals, addWebpackAlias } = require('customize-cra')
 const path = require('path')
 // 修改打包路径除了output，这里也要修改
 const paths = require('react-scripts/config/paths')
