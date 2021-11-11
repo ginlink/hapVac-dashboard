@@ -23,9 +23,7 @@ ReactDOM.render(
       <LanguageProvider>
         <ThemeProvider>
           <ThemedGlobalStyle />
-          <AppLayout>
-            <App />
-          </AppLayout>
+          <App />
         </ThemeProvider>
       </LanguageProvider>
     </HashRouter>

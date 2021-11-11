@@ -80,7 +80,7 @@ export function colors(darkMode: boolean): Colors {
     bs0: 'rgba(224,230,242,1)',
 
     //primary colors
-    primary1: '#FFAB36',
+    primary1: '#0076FF',
     primary2: '#8391a8',
     primary3: 'rgba(0, 118, 255, 0.4)',
     primary4: 'rgba(0, 118, 255, 0.5)',
