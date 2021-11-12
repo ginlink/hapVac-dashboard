@@ -40,15 +40,15 @@ function apiAxios<P, R>(method: Methods, url: string, params: P) {
       })
       .catch((err: any) => {
         const errCode = err?.response?.status
+
         switch (errCode) {
           case 400:
             console.log('错误请求')
             break
           case 401:
-            console.log('请求错误,权限问题')
-            break
           case 403:
             console.log('请求错误,权限问题')
+            location.href = '/login'
             break
           case 404:
             console.log('请求错误,未找到该资源')
