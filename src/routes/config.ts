@@ -6,16 +6,17 @@ export interface IRoute {
   children?: IRoute[]
 }
 
+// 路由配置
 export const Routes: IRoute[] = [
   {
-    icon: 'dashboard',
+    key: '/app/dashboard',
     title: '工作台',
-    key: '/app/dashboard/index',
+    icon: 'DashboardOutlined',
     component: 'Dashboard',
   },
   {
     key: '/app/home',
-    icon: 'dashboard',
+    icon: 'UserOutlined',
     title: 'Home',
     children: [
       {
@@ -32,8 +33,8 @@ export const Routes: IRoute[] = [
   },
   {
     key: '/app/about',
-    icon: 'dashboard',
     title: 'About',
+    icon: 'SettingOutlined',
     component: 'About',
   },
 ]
