@@ -37,4 +37,11 @@ export const Routes: IRoute[] = [
     icon: 'SettingOutlined',
     component: 'About',
   },
+
+  {
+    key: '/app/user',
+    icon: 'UserOutlined',
+    title: '用户管理',
+    component: 'User',
+  },
 ]
