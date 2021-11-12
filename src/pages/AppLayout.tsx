@@ -1,20 +1,21 @@
-import { Layout } from 'antd'
-import styled from 'styled-components'
+import React from 'react'
+import { Breadcrumb, Layout } from 'antd'
+import styled from 'styled-components/macro'
 
 import Sider from '@/components/Sider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import BreadcrumbGin from '@/components/BreadcrumbGin'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import React from 'react'
 import { computeShouldRenderRoutes } from '@/routes'
-import NotFound from '@/components/NotFound'
 
 const { Content } = Layout
 
 const LayoutContent = styled.div`
-  background: #fff;
+  /* background: #fff; */
   padding: 24px;
+`
+const BreadcrumbWrapper = styled.div`
+  padding-bottom: 24px;
 `
 
 const RenderRoutes = computeShouldRenderRoutes()
@@ -27,8 +28,15 @@ export default function AppLayout() {
       <Layout>
         <Header />
         <Content>
-          <BreadcrumbGin />
+          {/* <BreadcrumbGin /> */}
           <LayoutContent>
+            <BreadcrumbWrapper>
+              <Breadcrumb>
+                <Breadcrumb.Item>工作台</Breadcrumb.Item>
+                <Breadcrumb.Item>第二级</Breadcrumb.Item>
+                <Breadcrumb.Item>第三级</Breadcrumb.Item>
+              </Breadcrumb>
+            </BreadcrumbWrapper>
             <Switch>
               {RenderRoutes}
               <Route render={() => <Redirect to="/404" />} />
