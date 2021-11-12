@@ -243,7 +243,8 @@ export const ThemedGlobalStyle = createGlobalStyle`
 
   h1,
   a{
-    color: ${({ theme }) => theme.text0}; 
+    /* color: ${({ theme }) => theme.text0};  */
+    color: ${({ theme }) => theme.primary1}; 
   }
   a,a:link,a:visited,a:hover,a:active{
     text-decoration: none;

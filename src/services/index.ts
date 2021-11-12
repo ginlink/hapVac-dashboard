@@ -1,6 +1,7 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { BASE_URL } from './config'
 
+import { message } from 'antd'
 enum Methods {
   GET = 'get',
   POST = 'post',
@@ -31,15 +32,20 @@ function apiAxios<P, R>(method: Methods, url: string, params: P) {
     const isWrite = method == Methods.POST || method == Methods.PUT || method == Methods.PATCH
 
     call(url, isWrite ? params : { params })
-      .then((res: any) => {
-        if (res?.status === 200 || res?.status === 201) {
+      .then((res: AxiosResponse) => {
+        if (res.status === 200 || res.status === 201) {
           resolve(res.data)
         } else {
           reject('Axios返回状态不对，查看请求处理过程．．．．')
         }
       })
-      .catch((err: any) => {
-        const errCode = err?.response?.status
+      .catch((err: AxiosError) => {
+        const response = err.response
+
+        const errCode = response?.status
+        const data = response?.data
+
+        message.error(data?.msg)
 
         switch (errCode) {
           case 400:
