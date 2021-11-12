@@ -44,4 +44,10 @@ export const Routes: IRoute[] = [
     title: '用户管理',
     component: 'User',
   },
+  {
+    key: '/app/vacation',
+    icon: 'UserOutlined',
+    title: '假条管理',
+    component: 'Vacation',
+  },
 ]

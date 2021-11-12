@@ -3,6 +3,7 @@ import About from './About'
 import Dashboard from './Dashboard'
 import Home1 from './Home1'
 import User from './User'
+import Vacation from './Vacation'
 
 export default {
   Home,
@@ -10,6 +11,7 @@ export default {
   Home1,
   About,
   User,
+  Vacation,
 } as {
   [key: string]: () => JSX.Element
 }

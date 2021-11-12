@@ -16,7 +16,7 @@ const renderRoute = (route: IRoute): JSX.Element | null => {
   if (!component) return null
 
   const Component = Pages[component]
-  if (!Component) console.debug('[Route](该组件不存在):', component)
+  if (!Component) console.debug('[Route](该组件不存在，你导出组件了吗？):', component)
 
   return <Route key={key} exact path={key} component={Component} />
 }
