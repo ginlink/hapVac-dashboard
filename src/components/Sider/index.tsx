@@ -21,6 +21,7 @@ export const StyledNavLink = styled(NavLink).attrs({})``
 const Wrapper = styled.div`
   .sider {
     min-height: 100vh;
+    height: 100%;
     color: ${({ theme }) => theme.white};
   }
 `

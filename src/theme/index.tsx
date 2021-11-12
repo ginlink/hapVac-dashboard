@@ -226,7 +226,7 @@ export const Divide = styled.div<{ lang?: string | undefined }>`
 export const ThemedGlobalStyle = createGlobalStyle`
   html,
   body {
-    color: #000;
+    color: ${({ theme }) => theme.text0};
     line-height: 1;
 
     box-sizing: border-box;
@@ -243,7 +243,7 @@ export const ThemedGlobalStyle = createGlobalStyle`
 
   h1,
   a{
-    color: ${({ theme }) => theme.white}; 
+    color: ${({ theme }) => theme.text0}; 
   }
   a,a:link,a:visited,a:hover,a:active{
     text-decoration: none;
