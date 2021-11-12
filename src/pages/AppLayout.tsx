@@ -6,7 +6,7 @@ import Sider from '@/components/Sider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { computeShouldRenderRoutes } from '@/routes'
+import { computeShouldRenderRoutes } from '@/render-routes'
 
 const { Content } = Layout
 

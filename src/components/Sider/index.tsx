@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom'
 
 // import { Icon as LegacyIcon } from '@ant-design/compatible'
 import * as LegacyIcon from '@ant-design/icons'
-import { IRoute, Routes } from '@/routes/config'
+import { IRoute, Routes } from '@/render-routes/config'
 import AntdIcon from '../AntdIcon'
 
 const { Sider: AntdSider } = Layout
