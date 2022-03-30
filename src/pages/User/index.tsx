@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import { Trans } from '@lingui/macro'
 import { Card, Space, Table, Tag } from 'antd'
-
 const Wrapper = styled.div``
 
 const columns = [
@@ -78,7 +77,7 @@ const data = [
   },
 ]
 
-export default function User() {
+export default function UserPage() {
   return (
     <Wrapper>
       <Card>过滤搜索</Card>

@@ -1,13 +1,130 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { BASE_URL } from './config'
 
 import { message } from 'antd'
-enum Methods {
-  GET = 'get',
-  POST = 'post',
-  PUT = 'put',
-  DELETE = 'delete',
-  PATCH = 'patch',
+import { USER_INFO } from '@/constants/misc'
+import { UserInfo } from '@/state/user/reducer'
+
+interface HttpResponse<T = any> {
+  data: T
+  msg: string | null
+  statusCode: number
+  success: boolean
+}
+
+const instance: AxiosInstance = axios.create({
+  baseURL: BASE_URL,
+  timeout: 60000,
+})
+
+instance.interceptors.request.use((config) => {
+  // 加入token
+
+  const localUserInfo = localStorage.getItem(USER_INFO)
+
+  const userInfo: UserInfo = JSON.parse(localUserInfo ?? '{}')
+  const token = userInfo.token
+
+  if (!token) {
+    message.warn('请先登录')
+
+    // 去登录
+    setTimeout(() => {
+      location.href = '/#/login'
+    }, 500)
+  }
+
+  console.log('[](token):', token)
+  config.headers = {
+    Authorization: `Bearer ${token}`,
+  }
+
+  return config
+})
+
+instance.interceptors.response.use(
+  (res: AxiosResponse<HttpResponse>) => {
+    return res.data as any as AxiosResponse<HttpResponse>
+  },
+  (err) => {
+    const response = err.response
+
+    const errCode = response?.status
+    const data = response?.data
+    message.error(data?.msg)
+
+    switch (errCode) {
+      case 400:
+        console.log('错误请求')
+        break
+      case 401:
+      case 403:
+        console.log('请求错误,权限问题')
+        // history.pushState(null, '', '/login')
+        setTimeout(() => {
+          location.href = '/#/login'
+        }, 1000)
+        break
+      case 404:
+        console.log('请求错误,未找到该资源')
+        break
+      case 405:
+        console.log('请求方法未允许')
+        break
+      case 408:
+        console.log('请求超时')
+        break
+      case 500:
+        console.log('服务器端出错')
+        break
+      case 501:
+        console.log('网络未实现')
+        break
+      case 502:
+        console.log('网络错误')
+        break
+      case 503:
+        console.log('服务不可用')
+        break
+      case 504:
+        console.log('网络超时')
+        break
+      default:
+        console.log('未知错误', errCode, err)
+    }
+  }
+)
+
+export default {
+  get: <T = any>(url: string, params: Record<string, any> = {}): Promise<HttpResponse<T>> => {
+    let param = ''
+
+    const paramKeys = Object.keys(params)
+    if (paramKeys.length > 0) {
+      param += '?'
+
+      paramKeys.forEach((key) => {
+        const value = params[key]
+
+        param += `${key}=${value}`
+      })
+    }
+
+    return instance.get(url + param)
+  },
+  post: <T = any>(url: string, data: any): Promise<HttpResponse<T>> => {
+    return instance.post(url, data)
+  },
+  put: <T = any>(url: string, data: any): Promise<HttpResponse<T>> => {
+    return instance.put(url, data)
+  },
+  delete: <T = any>(url: string): Promise<HttpResponse<T>> => {
+    return instance.delete(url)
+  },
+  // 更新操作，但本项目用put居多
+  patch: <T = any>(url: string, params: any): Promise<HttpResponse<T>> => {
+    return instance.patch(url, params)
+  },
 }
 
 /**
@@ -17,89 +134,105 @@ enum Methods {
  * @param {Object} params  参数
  * @returns Promise<T>
  */
-function apiAxios<P, R>(method: Methods, url: string, params: P) {
-  return new Promise<R>((resolve, reject) => {
-    // axios.defaults.headers.common.Authorization = localStorage.getItem('accessToken')
-    // 设置默认头部
+// function apiAxios<P, R>(method: Methods, url: string, params: P) {
+//   return new Promise<R>((resolve, reject) => {
+//     // axios.defaults.headers.common.Authorization = localStorage.getItem('accessToken')
+//     // 设置默认头部
 
-    const instance: AxiosInstance = axios.create({
-      baseURL: BASE_URL,
-      timeout: 60000,
-    })
+//     const instance: AxiosInstance = axios.create({
+//       baseURL: BASE_URL,
+//       timeout: 60000,
+//     })
 
-    const call = instance[method]
+//     console.log('[](新实例):', instance)
 
-    const isWrite = method == Methods.POST || method == Methods.PUT || method == Methods.PATCH
+//     const call = instance[method]
 
-    call(url, isWrite ? params : { params })
-      .then((res: AxiosResponse) => {
-        if (res.status === 200 || res.status === 201) {
-          resolve(res.data)
-        } else {
-          reject('Axios返回状态不对，查看请求处理过程．．．．')
-        }
-      })
-      .catch((err: AxiosError) => {
-        const response = err.response
+//     const isWrite = method == Methods.POST || method == Methods.PUT || method == Methods.PATCH
 
-        const errCode = response?.status
-        const data = response?.data
+//     const localUserInfo = localStorage.getItem(USER_INFO)
 
-        message.error(data?.msg)
+//     const userInfo: UserInfo = JSON.parse(localUserInfo ?? '{}')
+//     const token = userInfo.token
 
-        switch (errCode) {
-          case 400:
-            console.log('错误请求')
-            break
-          case 401:
-          case 403:
-            console.log('请求错误,权限问题')
-            location.href = '/login'
-            break
-          case 404:
-            console.log('请求错误,未找到该资源')
-            break
-          case 405:
-            console.log('请求方法未允许')
-            break
-          case 408:
-            console.log('请求超时')
-            break
-          case 500:
-            console.log('服务器端出错')
-            break
-          case 501:
-            console.log('网络未实现')
-            break
-          case 502:
-            console.log('网络错误')
-            break
-          case 503:
-            console.log('服务不可用')
-            break
-          case 504:
-            console.log('网络超时')
-            break
-          default:
-            console.log('未知错误', errCode, err)
-        }
-      })
-  })
-}
-export default {
-  get: (url: string, params: any = {}) => {
-    return apiAxios(Methods.GET, url, params)
-  },
-  post: (url: string, data: any) => {
-    return apiAxios(Methods.POST, url, data)
-  },
-  put: (url: string, data: any) => {
-    return apiAxios(Methods.PUT, url, data)
-  },
-  delete: (url: string, params: any) => {
-    return apiAxios(Methods.DELETE, url, params)
-  },
-  patch: (url: string, params: any) => {
-    return apiAxios(Methods.PATCH, url, params)
-  },
-}
+//     console.log('[](token):', token)
+
+//     call(url, isWrite ? params : { params }, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     })
+//       .then((res: AxiosResponse) => {
+//         if (res.status === 200 || res.status === 201) {
+//           resolve(res.data)
+//         } else {
+//           reject('Axios返回状态不对，查看请求处理过程．．．．')
+//         }
+//       })
+//       .catch((err: AxiosError) => {
+//         const response = err.response
+
+//         const errCode = response?.status
+//         const data = response?.data
+
+//         switch (errCode) {
+//           case 400:
+//             console.log('错误请求')
+//             break
+//           case 401:
+//           case 403:
+//             console.log('请求错误,权限问题')
+//             // history.pushState(null, '', '/login')
+//             setTimeout(() => {
+//               location.href = '/#/login'
+//             }, 1000)
+//             break
+//           case 404:
+//             console.log('请求错误,未找到该资源')
+//             break
+//           case 405:
+//             console.log('请求方法未允许')
+//             break
+//           case 408:
+//             console.log('请求超时')
+//             break
+//           case 500:
+//             console.log('服务器端出错')
+//             break
+//           case 501:
+//             console.log('网络未实现')
+//             break
+//           case 502:
+//             console.log('网络错误')
+//             break
+//           case 503:
+//             console.log('服务不可用')
+//             break
+//           case 504:
+//             console.log('网络超时')
+//             break
+//           default:
+//             console.log('未知错误', errCode, err)
+//         }
+
+//         message.error(data?.msg)
+//       })
+//   })
+// }
+// export default {
+//   get: (url: string, params: any = {}) => {
+//     return apiAxios(Methods.GET, url, params)
+//   },
+//   post: (url: string, data: any) => {
+//     return apiAxios(Methods.POST, url, data)
+//   },
+//   put: (url: string, data: any) => {
+//     return apiAxios(Methods.PUT, url, data)
+//   },
+//   delete: (url: string, params: any) => {
+//     return apiAxios(Methods.DELETE, url, params)
+//   },
+//   patch: (url: string, params: any) => {
+//     return apiAxios(Methods.PATCH, url, params)
+//   },
+// }

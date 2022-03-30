@@ -1,10 +1,6 @@
-import { Vacation } from '@/pages/Vacation'
+import { LoginProp } from '@/pages/Login'
+import { Vacation } from '@/pages/Vacation/types'
 import http from './index'
-
-interface HttpResponse {
-  code: number
-  data: any
-}
 
 interface SearchParams {
   name?: string
@@ -12,18 +8,22 @@ interface SearchParams {
   end_time?: string
 }
 
-export const getVacationList = (searchParams?: SearchParams): Promise<HttpResponse> => {
-  return http.get('/vacation/admin', searchParams) as Promise<HttpResponse>
+export const getVacationList = (searchParams?: SearchParams) => {
+  return http.get('/vacation/admin', searchParams)
 }
 
-export const createVacation = (vacation: Partial<Vacation>): Promise<HttpResponse> => {
-  return http.post('/vacation/admin', vacation) as Promise<HttpResponse>
+export const loginAdmin = (loginData: LoginProp) => {
+  return http.post('/auth/loginAdmin', loginData)
 }
 
-export const deleteVacation = (id: number): Promise<HttpResponse> => {
-  return http.delete(`/vacation/admin/${id}`, null) as Promise<HttpResponse>
+export const createVacation = (vacation: Partial<Vacation>) => {
+  return http.post('/vacation/admin', vacation)
 }
 
-export const updateVacation = (id: number, vacation: Partial<Vacation>): Promise<HttpResponse> => {
-  return http.put(`/vacation/admin/${id}`, vacation) as Promise<HttpResponse>
+export const deleteVacation = (id: number) => {
+  return http.delete<Vacation>(`/vacation/admin/${id}`)
+}
+
+export const updateVacation = (id: number, vacation: Partial<Vacation>) => {
+  return http.put<Vacation>(`/vacation/admin/${id}`, vacation)
 }

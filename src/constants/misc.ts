@@ -1,4 +1,3 @@
-
 // 支持语言列表
 export const supportLangList = [
   { id: 1, title: 'English', symbol: 'en-US' },
@@ -11,3 +10,5 @@ export const supportLangList = [
   { id: 3, title: '繁體中文', symbol: 'zh-TW' },
   // { id: 7, title: 'Pусский', symbol: 'ru-RU' },
 ]
+
+export const USER_INFO = 'USER_INFO'
